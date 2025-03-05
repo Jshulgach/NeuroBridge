@@ -1,2 +1,29 @@
-*.rbc
-*.fyc
+# IDE and Editors
+.idea
+.vscode
+
+# Pyhon-related files
+utilities/__pycache__/
+__pycache__/
+*.pyc
+.venv
+.neurobridge/
+venv/
+
+# Folder built by server
+prompts
+models
+tests
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Generated gifs
+*.gif
+
+# Local text and config files
+*.txt
+*.yaml
+
+# Where all API keys might be stored
+.env

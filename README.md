@@ -1,6 +1,10 @@
 
+<p align="center">
+<img src="./assets/robot-holding-camera.png" width="720">
+</p>
 
-<h4 align="center">🤘🤖🤘 Build modular ai-powered robots in your garage right now.</h4>
+
+<h4 align="center">🤘🤖🤘 Build actual ai-powered robots for yourself now.</h4>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-0.1.0-limegreen">
@@ -55,3 +59,16 @@ The `config.yaml` file contains hyperparameters to load with the AI server. Adju
     ~~~
     pip install -r requirements.txt
     ~~~
+
+## Demo
+
+To run the AI server, execute the following command:
+```bash
+python main.py --enable_tts true --enable_camera true
+```
+
+You can now type into the terminal and converse with the NeuroBridge AI! Try it for yourself and see how it behaves...
+<p align="center">
+<img src="./assets/terminal_first_test.jpg" width="720">
+</p>
+
