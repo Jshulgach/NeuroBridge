@@ -22,6 +22,7 @@ tests
 *.gif
 
 # Local text and config files
+*.log
 *.txt
 *.yaml
 

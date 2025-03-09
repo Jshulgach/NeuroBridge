@@ -9,11 +9,20 @@ from RealtimeSTT import AudioToTextRecorder
 from dotenv import load_dotenv
 load_dotenv()
 
+def load_voice_id(keyword):
+    if keyword == "robot_cold":
+        return os.environ.get("COLDVOICE_ID")
+    elif keyword == "robot_warm":
+        return os.environ.get("WARMVOICE_ID")
+    elif keyword == "malak":
+        return os.environ.get("MALAKVOICE_ID")
 
 class AIAudio:
     """ Audio client for Text-to-Speech conversion """
-    def __init__(self, use_elevenlabs=True, speech_model_id="whisper-large-v3"):
+    def __init__(self, use_elevenlabs=True, speech_model_id="whisper-large-v3", voice_id="JBFqnCBsd6RMkjVDRZzb"):
         self.use_elevenlabs = use_elevenlabs
+        self.voice_id = load_voice_id(voice_id)
+        self.speech_model_id = speech_model_id
 
         # Text-To-Speech (TTS) client
         if self.use_elevenlabs:
@@ -27,14 +36,14 @@ class AIAudio:
             model="tiny.en",
             #compute_type="float16",
             ensure_sentence_ends_with_period=False,
-            batch_size=32,
-            realtime_model_type="tiny.en",
-            enable_realtime_transcription=True,
+            #batch_size=32,
+            #realtime_model_type="tiny.en", # Enable this one
+            #enable_realtime_transcription=True,
             #realtime_processing_pause=0.05,
             #early_transcription_on_silence=100,
             #post_speech_silence_duration=0.3,
             #min_length_of_recording=0.3,
-            no_log_file=True,
+            #no_log_file=True,                          # Enable this one
             #level=logging.CRITICAL  # Disable logging
         )
         self.speech_model_id = speech_model_id
@@ -43,12 +52,12 @@ class AIAudio:
         """ Converts text to speech and plays the audio stream """
         audio_stream = self.tts_client.text_to_speech.convert_as_stream(
             text=text,
-            voice_id="Mf0Z1ygfnWHQtBgou4p5",  # "JBFqnCBsd6RMkjVDRZzb",
-            model_id="eleven_flash_v2", # "eleven_multilingual_v2"
+            voice_id=self.voice_id,
+            model_id=self.speech_model_id,
             voice_settings=VoiceSettings(
                 stability=0.4,
-                similarity_boost=0.8,
-                speed=0.8,
+                similarity_boost=0.9,
+                speed=0.9,
             )
         )
         stream(audio_stream)

@@ -4,7 +4,6 @@ import torch
 from PIL import Image
 from transformers import AutoProcessor, AutoModelForZeroShotObjectDetection
 
-
 class DINODetection:
     """ Handles object tracking using Grounding DINO. """
     def __init__(self, dino_model_id="IDEA-Research/grounding-dino-tiny"):
@@ -23,10 +22,6 @@ class DINODetection:
         self.processor = AutoProcessor.from_pretrained(self.grounding_dino_id, cache_dir=dino_path)
         self.grounding_model = AutoModelForZeroShotObjectDetection.from_pretrained(self.grounding_dino_id,
                                                                                    cache_dir=dino_path).to(self.device)
-
-
-        #self.processor = AutoProcessor.from_pretrained(dino_model_id)
-        #self.grounding_model = AutoModelForZeroShotObjectDetection.from_pretrained(dino_model_id).to(self.device)
 
     def detect_objects(self, frame, prompt="bottle"):
         """Detects objects in a given frame using Grounding DINO."""
@@ -49,3 +44,45 @@ class DINODetection:
             cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), (0, 255, 0), 2)
             cv2.putText(frame, f"{class_name} {confidence:.2f}", (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         return frame
+
+class AICamera:
+    """ Manages camera streaming and object detection """
+
+    def __init__(self, camera_id=0, detector_id="IDEA-Research/grounding-dino-tiny"):
+        self.camera_id = camera_id
+        self.cap = None
+        self.running = False
+
+        if detector_id == "IDEA-Research/grounding-dino-tiny":
+            self.detector = DINODetection()
+        else:
+            raise ValueError("Invalid detector ID")
+
+    def start(self):
+        """ Starts the camera stream """
+        self.cap = cv2.VideoCapture(self.camera_id)
+        self.running = True
+        while self.running:
+            ret, frame = self.cap.read()
+            if ret:
+                cv2.imshow("Camera Feed", frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        self.stop()
+
+    def stop(self):
+        """ Stops the camera stream """
+        self.running = False
+        if self.cap:
+            self.cap.release()
+        cv2.destroyAllWindows()
+
+    def detect_objects(self, prompt="bottle"):
+        """ Runs object detection """
+        print(f"Detecting objects: {prompt}")
+        while self.running:
+            ret, frame = self.cap.read()
+            if ret:
+                boxes, confidences, class_names = self.detector.detect_objects(frame, prompt)
+                print(f"Detected: {class_names}")
+
