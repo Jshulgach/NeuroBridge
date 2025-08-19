@@ -13,7 +13,7 @@ if __name__ == "__main__":
     parser.add_argument("--camera_id", type=int, default=0, help="Camera ID")
     parser.add_argument("--use_robot", type=bool, default=False, help="Use robot")
     parser.add_argument("--robot_port", type=str, default="COM7", help="Robot port")
-    parser.add_argument("--personality", type=str, default="prompts/personality_robot_cold.txt", help="Path to prompt file")
+    parser.add_argument("--personality", type=str, default="prompts/personality_robot_friendly.txt", help="Path to prompt file")
     parser.add_argument("--verbose", type=bool, default=False, help="Enable verbose mode")
     args = parser.parse_args()
 

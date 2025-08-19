@@ -21,7 +21,7 @@ class AIServer:
 
     def __init__(self,
                  object_detector_id="IDEA-Research/grounding-dino-tiny",
-                 llm_model_id="llama-3.2-11b-vision-preview",
+                 llm_model_id= "llama-3.1-8b-instant", #"llama-3.2-11b-vision-preview",
                  enable_camera=False,
                  camera_id=0,
                  enable_tts=False,
@@ -54,7 +54,7 @@ class AIServer:
             self.audio_client = AIAudio(
                 use_elevenlabs=self.parameters['enable_tts'],
                 speech_model_id="eleven_flash_v2", # Fastest one I found
-                voice_id='robot_cold',
+                voice_id='robot_warm',
             )
 
         # Initialize Keyboard Poller
